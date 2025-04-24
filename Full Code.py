@@ -33,6 +33,22 @@ print("Numeric Variables Statistics:")
 print(desc_stats)
 desc_stats.to_csv('1_statistik_deskriptif_numeric.csv')
 
+# Visualization 1A: Numeric variables statistics
+fig, axes = plt.subplots(2, 4, figsize=(16, 10))
+axes = axes.ravel()
+
+for idx, col in enumerate(numeric_columns):
+    if idx < len(axes):
+        axes[idx].hist(data[col].dropna(), bins=30, edgecolor='black', alpha=0.7)
+        axes[idx].set_title(f'{col} Distribution')
+        axes[idx].set_xlabel(col)
+        axes[idx].set_ylabel('Frequency')
+        axes[idx].grid(axis='y', alpha=0.3)
+
+plt.tight_layout()
+plt.savefig('1_statistik_deskriptif_numeric.png', dpi=300, bbox_inches='tight')
+plt.close()
+
 # Also show categorical variables distribution
 print("\nCategorical Variables Distribution:")
 cat_stats = {}
@@ -46,6 +62,36 @@ for col in categorical_columns:
 # Save categorical statistics
 cat_stats_df = pd.DataFrame.from_dict({k: pd.Series(v) for k, v in cat_stats.items()})
 cat_stats_df.to_csv('1_statistik_deskriptif_categorical.csv')
+
+# Visualization 1B: Categorical variables distribution
+cat_cols = [col for col in categorical_columns if col != 'NObeyesdad']
+n_cols = 3
+n_rows = (len(cat_cols) + n_cols - 1) // n_cols
+fig, axes = plt.subplots(n_rows, n_cols, figsize=(15, n_rows * 4))
+axes = axes.ravel()
+
+for idx, col in enumerate(cat_cols):
+    if idx < len(axes):
+        value_counts = data[col].value_counts()
+        bars = axes[idx].bar(range(len(value_counts)), value_counts.values, alpha=0.7, edgecolor='black')
+        axes[idx].set_title(f'{col} Distribution')
+        axes[idx].set_xticks(range(len(value_counts)))
+        axes[idx].set_xticklabels(value_counts.index, rotation=45, ha='right')
+        axes[idx].set_ylabel('Count')
+        axes[idx].grid(axis='y', alpha=0.3)
+        
+        # Add count labels on bars
+        for bar, count in zip(bars, value_counts.values):
+            axes[idx].text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.1, 
+                          str(count), ha='center', va='bottom')
+
+# Hide empty subplots
+for idx in range(len(cat_cols), len(axes)):
+    axes[idx].set_visible(False)
+
+plt.tight_layout()
+plt.savefig('1_statistik_deskriptif_categorical.png', dpi=300, bbox_inches='tight')
+plt.close()
 
 # 2. DISTRIBUSI KATEGORI OBESITAS
 print("\n2. DISTRIBUSI KATEGORI OBESITAS")
@@ -65,6 +111,36 @@ obesity_table = pd.DataFrame({
 print(obesity_table)
 obesity_table.to_csv('2_distribusi_kategori_obesitas.csv', index=False)
 
+# Visualization 2: Obesity distribution pie chart and bar chart
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8))
+
+# Pie chart
+colors = plt.cm.Set3(np.linspace(0, 1, len(obesity_table)))
+wedges, texts, autotexts = ax1.pie(obesity_table['Persentase (%)'], 
+                                  labels=obesity_table['Kategori Obesitas'],
+                                  autopct='%1.1f%%',
+                                  colors=colors,
+                                  startangle=90)
+ax1.set_title('Obesity Categories Distribution (Percentage)', fontsize=14)
+
+# Bar chart
+bars = ax2.bar(range(len(obesity_table)), obesity_table['Jumlah Kasus (Frekuensi)'], 
+               color=colors, alpha=0.8, edgecolor='black')
+ax2.set_xticks(range(len(obesity_table)))
+ax2.set_xticklabels(obesity_table['Kategori Obesitas'], rotation=45, ha='right')
+ax2.set_ylabel('Frequency', fontsize=12)
+ax2.set_title('Obesity Categories Distribution (Count)', fontsize=14)
+ax2.grid(axis='y', alpha=0.3)
+
+# Add count labels on bars
+for bar, count in zip(bars, obesity_table['Jumlah Kasus (Frekuensi)']):
+    ax2.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 1, 
+             str(count), ha='center', va='bottom')
+
+plt.tight_layout()
+plt.savefig('2_distribusi_kategori_obesitas.png', dpi=300, bbox_inches='tight')
+plt.close()
+
 # 3. KLASIFIKASI BERDASARKAN GENDER
 print("\n3. KLASIFIKASI BERDASARKAN GENDER")
 print("="*50)
@@ -76,6 +152,43 @@ gender_obesity_distribution = pd.crosstab(data['Gender'], data['NObeyesdad'])
 print("Klasifikasi Berdasarkan Kategori Gender:")
 print(gender_obesity_distribution)
 gender_obesity_distribution.to_csv('3_klasifikasi_gender.csv')
+
+# Visualization 3: Gender vs Obesity category distribution
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8))
+
+# Stacked bar chart
+gender_obesity_distribution.plot(kind='bar', stacked=True, ax=ax1, colormap='viridis', 
+                               alpha=0.8, edgecolor='black')
+ax1.set_xlabel('Gender', fontsize=12)
+ax1.set_ylabel('Count', fontsize=12)
+ax1.set_title('Obesity Categories Distribution by Gender (Stacked)', fontsize=14)
+ax1.legend(title='Obesity Category', bbox_to_anchor=(1.05, 1), loc='upper left')
+ax1.set_xticklabels(ax1.get_xticklabels(), rotation=0)
+ax1.grid(axis='y', alpha=0.3)
+
+# Grouped bar chart
+gender_obesity_distribution.plot(kind='bar', ax=ax2, colormap='viridis', alpha=0.8, edgecolor='black')
+ax2.set_xlabel('Gender', fontsize=12)
+ax2.set_ylabel('Count', fontsize=12)
+ax2.set_title('Obesity Categories Distribution by Gender (Grouped)', fontsize=14)
+ax2.legend(title='Obesity Category', bbox_to_anchor=(1.05, 1), loc='upper left')
+ax2.set_xticklabels(ax2.get_xticklabels(), rotation=0)
+ax2.grid(axis='y', alpha=0.3)
+
+plt.tight_layout()
+plt.savefig('3_klasifikasi_gender.png', dpi=300, bbox_inches='tight')
+plt.close()
+
+# Additional visualization: Heatmap of gender vs obesity
+plt.figure(figsize=(12, 8))
+sns.heatmap(gender_obesity_distribution, annot=True, fmt='d', cmap='YlOrRd', 
+            cbar_kws={'label': 'Count'}, linewidths=0.5)
+plt.title('Heatmap: Gender vs Obesity Category', fontsize=14)
+plt.xlabel('Obesity Category', fontsize=12)
+plt.ylabel('Gender', fontsize=12)
+plt.tight_layout()
+plt.savefig('3_klasifikasi_gender_heatmap.png', dpi=300, bbox_inches='tight')
+plt.close()
 
 # 4. KORELASI ANTAR ATRIBUT
 print("\n4. KORELASI ANTAR ATRIBUT")
@@ -333,6 +446,11 @@ for i, file in enumerate(summary_files, 1):
     print(f"{i}. {file}")
 
 print("\nVisualization files have been created:")
+print("1. 1_statistik_deskriptif_numeric.png")
+print("1. 1_statistik_deskriptif_categorical.png")
+print("2. 2_distribusi_kategori_obesitas.png")
+print("3. 3_klasifikasi_gender.png")
+print("3. 3_klasifikasi_gender_heatmap.png")
 print("4. 4_correlation_heatmap.png")
 print("5. 5_knn_performance_plot.png")
 print("5. 5_confusion_matrix_best_model.png")
