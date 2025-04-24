@@ -1,0 +1,13 @@
+,Gender,CALC,FAVC,SCC,SMOKE,family_history_with_overweight,CAEC,MTRANS
+Always,,1.0,,,,,53.0,
+Automobile,,,,,,,,457.0
+Bike,,,,,,,,7.0
+Female,1043.0,,,,,,,
+Frequently,,70.0,,,,,242.0,
+Male,1068.0,,,,,,,
+Motorbike,,,,,,,,11.0
+Public_Transportation,,,,,,,,1580.0
+Sometimes,,1401.0,,,,,1765.0,
+Walking,,,,,,,,56.0
+no,,639.0,245.0,2015.0,2067.0,385.0,51.0,
+yes,,,1866.0,96.0,44.0,1726.0,,
