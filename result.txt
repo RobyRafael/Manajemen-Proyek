@@ -1,0 +1,144 @@
+1. STATISTIK DESKRIPTIF DATASET
+==================================================
+Numeric Variables Statistics:
+             mean    min     max        std     Median
+Age     24.312600  14.00   61.00   6.345968  22.777890
+Height   1.701677   1.45    1.98   0.093305   1.700499
+Weight  86.586058  39.00  173.00  26.191172  83.000000
+FCVC     2.419043   1.00    3.00   0.533927   2.385502
+NCP      2.685628   1.00    4.00   0.778039   3.000000
+CH2O     2.008011   1.00    3.00   0.612953   2.000000
+FAF      1.010298   0.00    3.00   0.850592   1.000000
+TUE      0.657866   0.00    2.00   0.608927   0.625350
+
+Categorical Variables Distribution:
+
+Gender:
+Gender
+Male      1068
+Female    1043
+Name: count, dtype: int64
+
+CALC:
+CALC
+Sometimes     1401
+no             639
+Frequently      70
+Always           1
+Name: count, dtype: int64
+
+FAVC:
+FAVC
+yes    1866
+no      245
+Name: count, dtype: int64
+
+SCC:
+SCC
+no     2015
+yes      96
+Name: count, dtype: int64
+
+SMOKE:
+SMOKE
+no     2067
+yes      44
+Name: count, dtype: int64
+
+family_history_with_overweight:
+family_history_with_overweight
+yes    1726
+no      385
+Name: count, dtype: int64
+
+CAEC:
+CAEC
+Sometimes     1765
+Frequently     242
+Always          53
+no              51
+Name: count, dtype: int64
+
+MTRANS:
+MTRANS
+Public_Transportation    1580
+Automobile                457
+Walking                    56
+Motorbike                  11
+Bike                        7
+Name: count, dtype: int64
+
+2. DISTRIBUSI KATEGORI OBESITAS
+==================================================
+                       Kategori Obesitas  Jumlah Kasus (Frekuensi)  Persentase (%)
+NObeyesdad
+Obesity_Type_I            Obesity_Type_I                       351       16.627191
+Obesity_Type_III        Obesity_Type_III                       324       15.348176
+Obesity_Type_II          Obesity_Type_II                       297       14.069162
+Overweight_Level_I    Overweight_Level_I                       290       13.737565
+Overweight_Level_II  Overweight_Level_II                       290       13.737565
+Normal_Weight              Normal_Weight                       287       13.595452
+Insufficient_Weight  Insufficient_Weight                       272       12.884889
+
+3. KLASIFIKASI BERDASARKAN GENDER
+==================================================
+Klasifikasi Berdasarkan Kategori Gender:
+NObeyesdad  Insufficient_Weight  Normal_Weight  Obesity_Type_I  ...  Obesity_Type_III  Overweight_Level_I  Overweight_Level_II
+Gender                                                          ...
+Female                      173            141             156  ...               323                 145                  103        
+Male                         99            146             195  ...                 1                 145                  187        
+
+[2 rows x 7 columns]
+
+4. KORELASI ANTAR ATRIBUT
+==================================================
+Korelasi Antar Atribut (Numeric Only):
+   Atribut 1 Atribut 2  Nilai Korelasi
+0     Height       Age       -0.025958
+1     Weight       Age        0.202560
+2     Weight    Height        0.463136
+3       FCVC       Age        0.016291
+4       FCVC    Height       -0.038121
+5       FCVC    Weight        0.216125
+6        NCP       Age       -0.043944
+7        NCP    Height        0.243672
+8        NCP    Weight        0.107469
+9        NCP      FCVC        0.042216
+10      CH2O       Age       -0.045304
+11      CH2O    Height        0.213376
+12      CH2O    Weight        0.200575
+13      CH2O      FCVC        0.068461
+14      CH2O       NCP        0.057088
+15       FAF       Age       -0.144938
+16       FAF    Height        0.294709
+17       FAF    Weight       -0.051436
+18       FAF      FCVC        0.019939
+19       FAF       NCP        0.129504
+20       FAF      CH2O        0.167236
+21       TUE       Age       -0.296931
+22       TUE    Height        0.051912
+23       TUE    Weight       -0.071561
+24       TUE      FCVC       -0.101135
+25       TUE       NCP        0.036326
+26       TUE      CH2O        0.011965
+27       TUE       FAF        0.058562
+
+5. PERFORMANSI MODEL KNN
+==================================================
+Performance Model KNN:
+   Nilai K   Akurasi  Precision    Recall  F1-Score
+0        3  0.801418   0.797893  0.801418  0.796867
+1        5  0.791962   0.788041  0.791962  0.785655
+2        7  0.768322   0.763447  0.768322  0.760404
+3        9  0.768322   0.759737  0.768322  0.756331
+4       11  0.758865   0.749889  0.758865  0.746092
+
+6. EVALUASI BERDASARKAN PREPROCESSING
+==================================================
+Best model: No Scaling with K=3
+Accuracy: 0.8913
+
+Evaluasi Berdasarkan Preprocessing:
+                Kondisi Data Preprocessing Method  K Value  Akurasi  Precision   Recall  F1-Score
+       Sebelum Preprocessing           No Scaling        5 0.881797   0.886430 0.881797  0.878222
+Sesudah Preprocessing (Best)           No Scaling        3 0.891253   0.892095 0.891253  0.888344
